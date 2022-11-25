@@ -1,0 +1,12 @@
+
+pandas==1.1.4
+numpy==1.18.2
+sklearn==0.0
+# xgboost==1.0.2
+geopy
+xmltodict
+matplotlib
+meteostat
+plotly
+geopandas
+# fuzzywuzzy==0.18.0
