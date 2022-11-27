@@ -9,4 +9,6 @@ matplotlib
 meteostat
 plotly
 geopandas
+RISE
+#chart_studio
 # fuzzywuzzy==0.18.0

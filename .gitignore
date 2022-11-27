@@ -1,2 +1,4 @@
 *.csv
 docker-compose.dev.yml
+*checkpoint*
+*.html
