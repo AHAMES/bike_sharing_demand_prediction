@@ -4,3 +4,4 @@ docker-compose.dev.yml
 *.html
 *.zip
 *.pkl
+*.sav
