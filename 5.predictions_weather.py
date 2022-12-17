@@ -197,7 +197,7 @@ del scaler
 
 filename = f'label_encoder{suf}.sav'
 joblib.dump(le, filename)
-del reg
+del le
 
 
 # In[ ]:
