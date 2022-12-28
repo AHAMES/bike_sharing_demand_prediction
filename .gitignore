@@ -5,3 +5,8 @@ docker-compose.dev.yml
 *.zip
 *.pkl
 *.sav
+*.png
+*.jpg
+*.jfif
+*.pdf
+*.pptx
