@@ -2,9 +2,10 @@
 FROM python:3.7-slim-stretch
 
 # Install dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential make gcc gnupg \
-    python3-dev unixodbc-dev
+#RUN apt-get update
+#RUN apt-get install -y --no-install-recommends
+#RUN build-essential make gcc gnupg
+#RUN python3-dev unixodbc-dev
 
 # Create /app dir and it set as working directory
 RUN mkdir /app
