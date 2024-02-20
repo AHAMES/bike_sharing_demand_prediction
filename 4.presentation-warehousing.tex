@@ -1,0 +1,553 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  ignorenonframetext,
+]{beamer}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\newif\ifbibliography
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Demand Prediction For Bike Sharing Systems},
+  pdfauthor={Ahmed Elsabbagh, Hagar Tarek, Loay Wael, Taha Ashri, Ahmed Saber, and Osama},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Demand Prediction For Bike Sharing Systems}
+\author{Ahmed Elsabbagh, Hagar Tarek, Loay Wael, Taha Ashri, Ahmed
+Saber, and Osama}
+\date{}
+
+\begin{document}
+\frame{\titlepage}
+
+\hypertarget{project-description}{%
+\section{Project Description}\label{project-description}}
+
+\begin{frame}{Introduction}
+\protect\hypertarget{introduction}{}
+\begin{itemize}
+\item
+  Bike Sharing Systems (BSS) is a very widely used method of
+  transportation for many people worldwide.
+\item
+  They have several advantages:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Non-polluting.
+  \item
+    Circumvents traffic congestion.
+  \item
+    Excellent for last-mile connections.
+  \item
+    Have a convenient payment system.
+  \end{itemize}
+\end{itemize}
+
+\includegraphics[width=2.91667in,height=\textheight]{images/bike_sharing_sweden.jpg}
+\includegraphics[width=2.91667in,height=\textheight]{images/Hangzhou_bike_sharing_station.jpg}
+\includegraphics[width=2.91667in,height=\textheight]{images/hello_bike.jpg}
+\end{frame}
+
+\begin{frame}{Motivation}
+\protect\hypertarget{motivation}{}
+\includegraphics[width=3.95833in,height=\textheight]{images/moving_truck.jpg}
+
+\begin{itemize}
+\tightlist
+\item
+  BSSs use self-serve bikes locked to docking stations.
+\item
+  Bikes are unlocked, used for a trip, then left at the closest station
+  to their destination.
+\item
+  Bikes need to be relocated from low demand to high demand stations.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Problem Definition}
+\protect\hypertarget{problem-definition}{}
+\begin{itemize}
+\tightlist
+\item
+  The relocation process could be costly and time consuming.
+\item
+  Stations with high demand cannot be identified in advance.
+\item
+  Stations with high return rate cannot be identified in advance.
+\item
+  Relocation may not be important if return rate is high enough to fill
+  the demand.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Objectives}
+\protect\hypertarget{objectives}{}
+The objective is to create multivariate regression models capable of
+estimating the following
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Demand prediction:} Number of bikes needed at each individual
+  station.
+\item
+  \textbf{Return prediction:} Number of bikes returned at each
+  individual station.
+\end{itemize}
+\end{frame}
+
+\hypertarget{background}{%
+\section{Background}\label{background}}
+
+\begin{frame}{Demand Prediction Models-Models}
+\protect\hypertarget{demand-prediction-models-models}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Univariate Time Series: }
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Autoregressive moving Average (ARMA)
+  \item
+    Autoregressive Integrated Moving Average (ARIMA)
+  \end{itemize}
+\item
+  \textbf{Multivariate Time Series: }
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Deep Learning with LSTM
+  \item
+    Random Forest.
+  \item
+    Boosting Algorithms.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Demand Prediction Models-Features}
+\protect\hypertarget{demand-prediction-models-features}{}
+\begin{itemize}
+\item
+  \textbf{Demographics:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Wealth.
+  \item
+    Average age.
+  \end{itemize}
+\item
+  \textbf{Community}
+\item
+  \textbf{Weather}
+\item
+  \textbf{Sliding Window Statistics:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Standard deviations.
+  \item
+    Averages.
+  \end{itemize}
+\end{itemize}
+
+NB: Weather is especially important. BIXI BSS in Montreal is not
+operational in unfavorable weather, typically in mid-November to April.
+\end{frame}
+
+\hypertarget{dataset}{%
+\section{Dataset}\label{dataset}}
+
+\begin{frame}{Lyft/Baywheels}
+\protect\hypertarget{lyftbaywheels}{}
+The data was provided by Lyft, the owner of the BSS company Baywheels
+(formally GoBike) operating in San Francisco Bay Area.
+
+\begin{itemize}
+\tightlist
+\item
+  The data is available as far as 2017 before Lyft's acquisition of
+  GoBike.
+\item
+  The data used however is limited to 2021 and 2022 because:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    The disruption caused by the 2020 COVID pandemic.
+  \item
+    Potential business growth gap between 2019 and 2021.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Weather Data}
+\protect\hypertarget{weather-data}{}
+\begin{itemize}
+\tightlist
+\item
+  Weather data is very relevant in determining the demand.
+\item
+  The weather data for San Francisco Bay Area is provided by Meteostat
+  through a Python API.
+\end{itemize}
+
+\includegraphics[width=0.5\textwidth,height=\textheight]{images/meteostat_example.png}
+\end{frame}
+
+\begin{frame}{Dataset Description}
+\protect\hypertarget{dataset-description}{}
+\begin{block}{Size:}
+\protect\hypertarget{size}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Original Number of Trips:} 4744199 trips .
+\item
+  \textbf{Final Number of Trips:} 3855197 trips.
+\item
+  \textbf{Number Of Stations}: 535
+\item
+  \textbf{Period:} From January 2021 to December 2022
+\end{itemize}
+\end{block}
+
+\begin{block}{Relevant Columns:}
+\protect\hypertarget{relevant-columns}{}
+\begin{itemize}
+\tightlist
+\item
+  Station Name (start/end)
+\item
+  Time (start/end)
+\item
+  Coordinates (start/end)
+\item
+  Ride ID
+\end{itemize}
+\end{block}
+\end{frame}
+
+\hypertarget{cleaning-process}{%
+\section{Cleaning Process}\label{cleaning-process}}
+
+\begin{frame}{Cleaning Process}
+\protect\hypertarget{cleaning-process-1}{}
+\begin{itemize}
+\item
+  \textbf{Station Standardization:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Stations in a particular street don't always have the same
+    coordinates.
+  \item
+    Many stations don't have a standardized name or ID, making them
+    unidentifiable.
+  \item
+    \textbf{Solution To Reduce Data Loss}:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Use a single coordinate for any identifiable stations.
+    \item
+      Approximate the closest standard station to any trip.
+    \item
+      If the closest station is less than 500 meters away, keep the
+      trip, otherwise, drop.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Cleaning Process}
+\protect\hypertarget{cleaning-process-2}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Same Station Trip:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Several trips usually take place in several minutes, with the end
+    station being the same as start stations.
+  \item
+    This could be a result of users trying out the system or changed
+    minds.
+  \item
+    To prevent redundancy, any same station trip with duration less than
+    4 minutes will be removed.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Cleaning Process}
+\protect\hypertarget{cleaning-process-3}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Clustering}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Helps reduce weather data size by:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Approximating areas closest to each other.
+    \item
+      Approximating the weather conditions for each cluster.
+    \end{itemize}
+  \item
+    Separates the areas the BSS serves.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Cleaning Process}
+\protect\hypertarget{cleaning-process-4}{}
+\end{frame}
+
+\begin{frame}{Demand and Returns}
+\protect\hypertarget{demand-and-returns}{}
+\textbf{Definitions}
+
+\begin{itemize}
+\tightlist
+\item
+  Demand: Number of trips starting at a particular station.
+\item
+  Returns: Number of trips ending at a particular station.
+\item
+  ``Returns'' does not indicate actual number of bikes available, but it
+  indicates how many bikes finished their trips there, which when
+  compared with demand should provide a good idea about the available
+  bikes.
+\item
+  Therefore, demand will be the main focus, while returns will be taken
+  as secondary.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Demand}
+\protect\hypertarget{demand}{}
+\end{frame}
+
+\begin{frame}{Demand and Returns}
+\protect\hypertarget{demand-and-returns-1}{}
+\end{frame}
+
+\begin{frame}{Demand Spread}
+\protect\hypertarget{demand-spread}{}
+\end{frame}
+
+\begin{frame}{Demand Spread}
+\protect\hypertarget{demand-spread-1}{}
+\end{frame}
+
+\hypertarget{results}{%
+\section{Results}\label{results}}
+
+\begin{frame}{Testing Method}
+\protect\hypertarget{testing-method}{}
+\includegraphics[width=0.5\textwidth,height=\textheight]{images/test_split.png}
+\end{frame}
+
+\begin{frame}{Daily Demand Prediction}
+\protect\hypertarget{daily-demand-prediction}{}
+\end{frame}
+
+\begin{frame}{Hourly Demand Prediction}
+\protect\hypertarget{hourly-demand-prediction}{}
+\end{frame}
+
+\begin{frame}{Daily Demand Prediction Example Station}
+\protect\hypertarget{daily-demand-prediction-example-station}{}
+\end{frame}
+
+\begin{frame}{Hourly Demand Prediction Example Station}
+\protect\hypertarget{hourly-demand-prediction-example-station}{}
+\end{frame}
+
+\begin{frame}{RMSE}
+\protect\hypertarget{rmse}{}
+There are several criteria that can calculate the RMSE:
+
+\begin{itemize}
+\tightlist
+\item
+  Hourly Predictions: 1.4093 Bikes Error.
+\item
+  Overall Daily Predictions: 4.4659 Bikes Daily
+\item
+  Mean RMSE Hourly Per Station: 3.6386 Bikes hourly
+\end{itemize}
+\end{frame}
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\begin{frame}{}
+\protect\hypertarget{section}{}
+\begin{itemize}
+\tightlist
+\item
+  Susan Shaheen, Stacey Guzman, and Hua Zhang. Bikesharing in europe,
+  the americas, and asia. Transportation Research Record, pages
+  159--167, 1 2010.
+\item
+  Andreas Nikiforiadis, Katerina Chrysostomou, and Georgia Aifadopoulou.
+  Exploring travelers' characteristics affecting their intention to
+  shift to bike-sharing systems due to a sophisticated mobile app.
+  Algorithms, 12:264, 12 2019.
+\item
+  Jung-Hoon Cho, Young-Hyun Seo, and Dong-Kyu Kim. Efficiency comparison
+  of public bike-sharing repositioning strategies based on predicted
+  demand patterns. Transportation Research Record: Journal of the
+  Trans-portation Research Board, 2675:104--118, 11 2021.
+\item
+  Aliasghar Mehdizadeh Dastjerdi and Catherine Morency. Bike-sharing
+  demand prediction at community level under covid-19 using deep
+  learning. Sensors, 22:1060, 1 2022.
+\item
+  Bike share in the san francisco bay area --- bay wheels --- lyft.
+\item
+  Ahmed Ghanem, Hesham A. Rakha, and Leanna House. Modeling bike
+  availability in a bike-sharing system using machine learning. pages
+  374--378. IEEE, 6 2017.
+\item
+  Andreas Kaltenbrunner, Rodrigo Meza, Jens Grivolla, Joan Codina, and
+  Rafael Banchs. Urban cycles and mobility patterns: Exploring and
+  predicting trends in a bicycle-based public transport system.
+  Pervasive and Mobile Computing, 6:455--466, 8 2010.
+\item
+  Alvaro Lozano, Juan De Paz, Gabriel Villarrubia Gonz ́alez, Daniel
+  Iglesia, and Javier Bajo. Multi-agent system for demand prediction and
+  trip visualization in bike sharing systems. Applied Sciences, 8:67, 1
+  2018.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{}
+\protect\hypertarget{section-1}{}
+\begin{itemize}
+\tightlist
+\item
+  R. Alexander Rixey. Station-level forecasting of bikesharing
+  ridership. Transportation Research Record: Journal of the
+  Transportation Research Board, 2387:46--55, 1 2013.
+\item
+  Young-Hyun Seo, Sangwon Yoon, Dong-Kyu Kim, Seung-Young Kho, and
+  Jaemin Hwang. Predicting demand for a bike-sharing system with station
+  activity based on random forest. Proceedings of the Institution of
+  Civil Engineers - Municipal Engineer, 174:97--107, 6 2021
+\end{itemize}
+\end{frame}
+
+\hypertarget{thank-you}{%
+\section{Thank you!}\label{thank-you}}
+
+\end{document}

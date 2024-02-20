@@ -1,11 +1,11 @@
 ---
 title: "Demand Prediction For Bike Sharing Systems"
-author: "Ahmed ElSabbagh"
+author: "Ahmed Elsabbagh, Hagar Tarek, Loay Wael, Taha Ashri, Ahmed Saber, and Osama"
 output:
-  beamer_presentation: default
   ioslides_presentation:
     widescreen: yes
     smaller: yes
+  beamer_presentation: default
 ---
 
 ```{r setup, include=FALSE}
@@ -220,7 +220,7 @@ There are several criteria that can calculate the RMSE:
 
 + Hourly Predictions: 1.4093 Bikes Error.
 + Overall Daily Predictions: 4.4659 Bikes Daily
-+ Mean RMSE Hourly Per Station: 3.6386 Bikes Daily
++ Mean RMSE Hourly Per Station: 3.6386 Bikes hourly
 
 
 # References
